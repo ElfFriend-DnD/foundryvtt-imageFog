@@ -1,0 +1,36 @@
+{
+  "name": "image-fog",
+  "title": "Image Fog",
+  "description": "Use a custom image as the Fog Layer",
+  "systems": [],
+  "version": "0.1.0",
+  "author": "Andrew Krigline (akrigline)",
+  "authors": [
+    {
+      "name": "Andrew Krigline",
+      "discord": "Calego#0914",
+      "url": "https://github.com/ElfFriend-DnD"
+    }
+  ],
+  "esmodules": [
+    "foundryvtt-imageFog.js"
+  ],
+  "styles": [
+    "foundryvtt-imageFog.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "minimumCoreVersion": "0.7.3",
+  "compatibleCoreVersion": "0.7.3",
+  "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/issues",
+  "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases",
+  "download": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/module.zip",
+  "manifest": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/module.json",
+  "readme": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/README.md",
+  "url": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog"
+}
