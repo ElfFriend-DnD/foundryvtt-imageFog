@@ -2,7 +2,6 @@
   "name": "image-fog",
   "title": "Image Fog",
   "description": "Use a custom image as the Fog Layer",
-  "systems": [],
   "version": "0.1.0",
   "author": "Andrew Krigline (akrigline)",
   "authors": [
@@ -12,12 +11,13 @@
       "url": "https://github.com/ElfFriend-DnD"
     }
   ],
-  "esmodules": [
-    "foundryvtt-imageFog.js"
+  "dependencies": [
+    {
+      "name": "lib-wrapper"
+    }
   ],
-  "styles": [
-    "foundryvtt-imageFog.css"
-  ],
+  "esmodules": ["foundryvtt-imageFog.js"],
+  "styles": ["foundryvtt-imageFog.css"],
   "languages": [
     {
       "lang": "en",
