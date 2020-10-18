@@ -6,7 +6,6 @@ export const renderSceneConfig = (app, html, data) => {
 
 const renderUnexploredImgControls = (app, html, data) => {
   const unexploredImg = app.entity.getFlag(MODULE_ID, MyFlags.UnexploredImg);
-  const bg = app.entity.img;
   const darknessSlider = html.find('[name=fogExploration]');
   const formGroup = darknessSlider.closest('.form-group');
 
@@ -20,7 +19,7 @@ const renderUnexploredImgControls = (app, html, data) => {
               <i class="fas fa-file-import fa-fw"></i>
           </button>
           <input class="image" type="text" name="flags.${MODULE_ID}.${MyFlags.UnexploredImg}" value="${
-    unexploredImg ? unexploredImg : bg ? bg : ``
+    unexploredImg ? unexploredImg : ``
   }" placeholder="Unexplored Fog Background Image File Path" data-dtype="String" />
       </div>
   </div>

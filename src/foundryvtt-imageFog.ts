@@ -15,7 +15,21 @@ Hooks.once('init', async function () {
   registerSettings();
 });
 
+Hooks.once('setup', function () {
+  // Do anything after initialization but before ready
+  libWrapper.register(
+    MODULE_ID,
+    'SightLayer.prototype._drawFogContainer',
+    (original) => {
+      log(false, 'Drawing Fog', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
+      return original();
+    },
+    'WRAPPER'
+  );
+});
+
 // from https://github.com/death-save/gm-bg/blob/master/gm-bg.js
 Hooks.on('renderSceneConfig', renderSceneConfig);
 
 Hooks.on('canvasReady', canvasReady);
+// Hooks.on('canvasReady', FogImgLayer.init);

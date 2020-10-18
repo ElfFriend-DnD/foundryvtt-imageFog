@@ -1,10 +1,80 @@
 import { MODULE_ID, MyFlags } from '../../constants';
-import { log } from '../../helpers';
+import { log, pixiDump } from '../../helpers';
+
+// export class FogImgLayer extends CanvasLayer {
+//   constructor() {
+//     super();
+//   }
+
+//   static init() {
+//     log(true, 'Init FogImgLayer', { this: this });
+//   }
+// }
 
 export const canvasReady = async (canvas) => {
-  await renderExploredImgOnFogLayer(canvas);
+  await renderUnexploredImgLayer(canvas);
+  log(false, 'dumping', canvas.sight.filter.blendMode);
 };
 
+const renderUnexploredImgLayer = async (canvas) => {
+  const d = canvas.dimensions;
+  const blurDistance = game.settings.get('core', 'softShadows') ? CONFIG.Canvas.blurStrength : 0;
+  const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
+  const unexploredTexture = await loadTexture(unexploredImgPath);
+
+  log(false, 'renderUnexploredImgLayer', {
+    unexploredImgPath,
+  });
+
+  const unexploredFogSprite = new PIXI.Sprite(unexploredTexture);
+
+  unexploredFogSprite.position.set(d.paddingX, d.paddingY);
+  unexploredFogSprite.width = d.sceneWidth;
+  unexploredFogSprite.height = d.sceneHeight;
+
+  const index = canvas.stage.getChildIndex(canvas.sight) + 1;
+  canvas.fogImg = canvas.stage.addChildAt(new CanvasLayer(), index);
+
+  log(false, {
+    sightLayer: canvas.sight,
+    fog: canvas.sight.fog,
+  });
+
+  // canvas.sight.filter.blendMode = PIXI.BLEND_MODES.NORMAL;
+
+  const filter = blurDistance > 0 ? new PIXI.filters.BlurFilter(blurDistance) : new PIXI.filters.AlphaFilter(1.0);
+  filter.blendMode = PIXI.BLEND_MODES.NORMAL;
+
+  log(false, { existingFilter: canvas.sight.fog.filters, newFilter: [filter] });
+
+  canvas.sight.fog.filters = [filter];
+
+  // pixiDump(canvas.sight.fog);
+  // pixiDump(canvas.sight.fog.explored);
+
+  // canvas.fogImg.addChild(unexploredFogSprite);
+  // let renderer = PIXI.autoDetectRenderer({
+  //   backgroundColor: 0xffffff,
+  // });
+
+  // log(false, 'renderer being used', renderer);
+
+  const unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
+  canvas.app.renderer.render(canvas.sight, unexploredMaskTexture);
+
+  // pixiDump(unexploredMaskTexture);
+
+  const unexploredMaskSprite = new PIXI.Sprite(unexploredMaskTexture);
+  unexploredMaskSprite.position.set(0, 0);
+  unexploredMaskSprite.width = d.width;
+  unexploredMaskSprite.height = d.height;
+
+  pixiDump(unexploredMaskSprite);
+
+  // canvas.fogImg.addChild(unexploredMaskSprite);
+};
+
+/* Ditched in Favor of new Method */
 const renderExploredImgOnFogLayer = async (canvas) => {
   const d = canvas.dimensions;
   const bg = canvas.scene.data.img;
