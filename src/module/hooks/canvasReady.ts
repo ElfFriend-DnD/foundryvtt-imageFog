@@ -13,7 +13,6 @@ import { log, pixiDump } from '../../helpers';
 
 export const canvasReady = async (canvas) => {
   await renderUnexploredImgLayer(canvas);
-  log(false, 'dumping', canvas.sight.filter.blendMode);
 };
 
 const renderUnexploredImgLayer = async (canvas) => {
@@ -22,18 +21,17 @@ const renderUnexploredImgLayer = async (canvas) => {
   const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
   const unexploredTexture = await loadTexture(unexploredImgPath);
 
-  log(false, 'renderUnexploredImgLayer', {
-    unexploredImgPath,
-  });
+  // add fogImg CanvasLayer
+  // const index = canvas.stage.getChildIndex(canvas.sight) + 1;
+  // canvas.fogImg = canvas.stage.addChildAt(new CanvasLayer(), index);
 
-  const unexploredFogSprite = new PIXI.Sprite(unexploredTexture);
+  // add image sprite to sight layer.
+  canvas.sight.unexploredFogSprite = new PIXI.Sprite(unexploredTexture);
+  canvas.sight.unexploredFogSprite.position.set(d.paddingX, d.paddingY);
+  canvas.sight.unexploredFogSprite.width = d.sceneWidth;
+  canvas.sight.unexploredFogSprite.height = d.sceneHeight;
 
-  unexploredFogSprite.position.set(d.paddingX, d.paddingY);
-  unexploredFogSprite.width = d.sceneWidth;
-  unexploredFogSprite.height = d.sceneHeight;
-
-  const index = canvas.stage.getChildIndex(canvas.sight) + 1;
-  canvas.fogImg = canvas.stage.addChildAt(new CanvasLayer(), index);
+  canvas.sight.addChild(canvas.sight.unexploredFogSprite);
 
   log(false, {
     sightLayer: canvas.sight,
@@ -44,98 +42,18 @@ const renderUnexploredImgLayer = async (canvas) => {
 
   const filter = blurDistance > 0 ? new PIXI.filters.BlurFilter(blurDistance) : new PIXI.filters.AlphaFilter(1.0);
   filter.blendMode = PIXI.BLEND_MODES.NORMAL;
+  const invertFilter = new PIXI.filters.ColorMatrixFilter();
 
   log(false, { existingFilter: canvas.sight.fog.filters, newFilter: [filter] });
 
-  canvas.sight.fog.filters = [filter];
-
-  // pixiDump(canvas.sight.fog);
-  // pixiDump(canvas.sight.fog.explored);
-
-  // canvas.fogImg.addChild(unexploredFogSprite);
-  // let renderer = PIXI.autoDetectRenderer({
-  //   backgroundColor: 0xffffff,
-  // });
-
-  // log(false, 'renderer being used', renderer);
+  // // apply ColorMatrixFilter to sight layer
+  canvas.sight.fog.filters = [filter, invertFilter];
+  // activate the negative ColorMatrixFilter
+  invertFilter.negative(false);
 
   const unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
-  canvas.app.renderer.render(canvas.sight, unexploredMaskTexture);
+  canvas.app.renderer.render(canvas.sight.fog, unexploredMaskTexture);
 
-  // pixiDump(unexploredMaskTexture);
-
-  const unexploredMaskSprite = new PIXI.Sprite(unexploredMaskTexture);
-  unexploredMaskSprite.position.set(0, 0);
-  unexploredMaskSprite.width = d.width;
-  unexploredMaskSprite.height = d.height;
-
-  pixiDump(unexploredMaskSprite);
-
-  // canvas.fogImg.addChild(unexploredMaskSprite);
-};
-
-/* Ditched in Favor of new Method */
-const renderExploredImgOnFogLayer = async (canvas) => {
-  const d = canvas.dimensions;
-  const bg = canvas.scene.data.img;
-  const sightFilter = { ...canvas.sight.filter };
-  const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
-  const blurDistance = game.settings.get('core', 'softShadows') ? CONFIG.Canvas.blurStrength : 0;
-
-  log(false, 'canvasReady, adding our image sprites', {
-    unexploredImgPath,
-    sightFilter,
-    canvas: { ...canvas },
-    blurDistance: blurDistance,
-  });
-
-  const unexploredTexture = await loadTexture(unexploredImgPath);
-  // const exploredTexture = await loadTexture(exploredImgPath);
-
-  // canvas.sight.filter.blurXFilter.enabled = false; // disable blur
-  // canvas.sight.filter.blurYFilter.enabled = false; // disable blur
-  canvas.sight.filter.blur = 0.01;
-  canvas.sight.filter.blendMode = PIXI.BLEND_MODES.NORMAL;
-
-  const fogContainer = canvas.sight.fog;
-  const fogCurrentContainer = fogContainer.current;
-  const fogExploredContainer = fogContainer.explored;
-
-  log(false, 'fogContainer before', {
-    ...fogContainer,
-  });
-
-  // fogContainer.unexplored = null;
-
-  // Apply a multiply blend filter to the fog.current Container
-  fogCurrentContainer.filter =
-    blurDistance > 0 ? new PIXI.filters.BlurFilter(blurDistance) : new PIXI.filters.AlphaFilter(1.0);
-  // fogCurrentContainer.filter.blendMode = PIXI.BLEND_MODES.SCREEN;
-  fogCurrentContainer.filters = [fogCurrentContainer.filter];
-
-  // Apply a multiply blend filter to the fog.explored Container
-  fogExploredContainer.filter =
-    blurDistance > 0 ? new PIXI.filters.BlurFilter(blurDistance) : new PIXI.filters.AlphaFilter(1.0);
-  // fogExploredContainer.filter.blendMode = PIXI.BLEND_MODES.MULTIPLY;
-  fogExploredContainer.filters = [fogExploredContainer.filter];
-
-  log(false, 'fogContainer after', {
-    ...fogContainer,
-  });
-
-  // create the unexplored image sprite
-  const unexploredFogSprite = new PIXI.Sprite(unexploredTexture);
-  unexploredFogSprite.blendMode = PIXI.BLEND_MODES.SCREEN;
-
-  unexploredFogSprite.position.set(d.paddingX, d.paddingY);
-  unexploredFogSprite.width = d.sceneWidth;
-  unexploredFogSprite.height = d.sceneHeight;
-
-  // add the sprite to the unexplored container
-  fogContainer.addChildAt(unexploredFogSprite, 1); // index 0 is the black fog fill
-
-  log(false, 'added unexploredFogSprite', {
-    unexploredFogSprite,
-    canvas,
-  });
+  canvas.sight.unexploredFogSprite.mask = new PIXI.Sprite(unexploredMaskTexture);
+  canvas.sight.addChild(canvas.sight.unexploredFogSprite.mask);
 };

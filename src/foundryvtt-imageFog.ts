@@ -4,6 +4,7 @@ import { MODULE_ID, MySettings, MyFlags } from './constants';
 import { libWrapper } from './module/shim';
 import { renderSceneConfig } from './module/hooks/renderSceneConfig';
 import { canvasReady } from './module/hooks/canvasReady';
+import { sightRefresh } from './module/hooks/sightRefresh';
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -32,4 +33,6 @@ Hooks.once('setup', function () {
 Hooks.on('renderSceneConfig', renderSceneConfig);
 
 Hooks.on('canvasReady', canvasReady);
+
+Hooks.on('sightRefresh', sightRefresh);
 // Hooks.on('canvasReady', FogImgLayer.init);
