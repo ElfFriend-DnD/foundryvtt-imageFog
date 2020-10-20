@@ -1,3 +1,15 @@
+# Work In Progress
+
+## Moving Parts
+- `SightLayer.fog` is a white to black painting of what should be visible of the background. This has the BlendMode of MULTIPLY applied to paint only the darker parts onto the background.
+- Whatever Image I want to apply to the "Black" parts of the fog will need to live seperate from the `SightLayer.fog` PIXI Container so that the multiply can still work.
+- OR The whole `SightLayer.fog` container will need to be inverted and turned into a mask for either a Black fill or Image which is then blendMode NORMAL. 
+
+- Either Way, I need to create a Sprite based on the `SightLayer.fog` or `SightLayer` itself's contents, invert it so that Black is what we expect to be transparent, and apply that as a mask to the Sprite of the image being loaded.
+
+- I need to do this as the SightLayer updates with each update.
+
+
 # Image as Fog
 
 ![Latest Release Download Count](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets%5B1%5D.download_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2FElfFriend-DnD%2Ffoundryvtt-imageFog%2Freleases%2Flatest)

@@ -3,8 +3,8 @@ import { registerSettings } from './module/settings';
 import { MODULE_ID, MySettings, MyFlags } from './constants';
 import { libWrapper } from './module/shim';
 import { renderSceneConfig } from './module/hooks/renderSceneConfig';
-import { canvasReady } from './module/hooks/canvasReady';
 import { sightRefresh } from './module/hooks/sightRefresh';
+import { FogImageLayer } from './module/classes/FogImageLayer';
 
 /* ------------------------------------ */
 /* Initialize module					*/
@@ -22,7 +22,7 @@ Hooks.once('setup', function () {
     MODULE_ID,
     'SightLayer.prototype._drawFogContainer',
     (original) => {
-      log(false, 'Drawing Fog', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
+      log(false, '_drawFogContainer firing', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
       return original();
     },
     'WRAPPER'
@@ -32,7 +32,13 @@ Hooks.once('setup', function () {
 // from https://github.com/death-save/gm-bg/blob/master/gm-bg.js
 Hooks.on('renderSceneConfig', renderSceneConfig);
 
-Hooks.on('canvasReady', canvasReady);
+Hooks.once('canvasInit', () => {
+  log(true, `Adding FogImageLayer`);
+  // add FogImageLayer
+  const index = canvas.stage.getChildIndex(canvas.sight) + 1;
+  canvas.fogImage = canvas.stage.addChildAt(new FogImageLayer(), index);
+});
 
-Hooks.on('sightRefresh', sightRefresh);
-// Hooks.on('canvasReady', FogImgLayer.init);
+Hooks.on('sightRefresh', () => canvas.fogImage.sightRefresh());
+
+Hooks.on('canvasReady', () => canvas.fogImage.init());
