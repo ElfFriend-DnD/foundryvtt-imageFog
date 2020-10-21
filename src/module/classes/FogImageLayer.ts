@@ -8,31 +8,28 @@ export class FogImageLayer extends CanvasLayer {
   unexploredMaskTexture: PIXI.RenderTexture;
   unexploredMaskSprite: PIXI.Sprite;
 
-  constructor() {
-    super();
-    log(false, 'FogImageLayer constructor');
+  createUnexploredMaskTexture() {
+    log(false, 'createUnexploredMaskTexture');
     const d = canvas.dimensions;
-
-    // this.unexploredFogSprite = new PIXI.Sprite();
-    // this.unexploredFogSprite.position.set(d.paddingX, d.paddingY);
-    // this.unexploredFogSprite.width = d.sceneWidth;
-    // this.unexploredFogSprite.height = d.sceneHeight;
-
-    // this.unexploredFogMaskSprite = new PIXI.Sprite();
 
     this.unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
   }
 
   init() {
-    log(true, 'Init FogImageLayer');
+    log(true, 'Init FogImageLayer', {
+      unexploredFogTexture: this.unexploredFogTexture,
+      unexploredFogSprite: this.unexploredFogSprite,
+      unexploredMaskTexture: this.unexploredMaskTexture,
+      unexploredMaskSprite: this.unexploredMaskSprite,
+    });
     const d = canvas.dimensions;
 
-    this.unexploredFogSprite = this.addChild(new PIXI.Sprite(this.unexploredFogTexture));
+    this.unexploredFogSprite = this.addChild(new PIXI.Sprite());
     this.unexploredFogSprite.position.set(d.paddingX, d.paddingY);
     this.unexploredFogSprite.width = d.sceneWidth;
     this.unexploredFogSprite.height = d.sceneHeight;
 
-    this.unexploredMaskSprite = this.addChild(new PIXI.Sprite(this.unexploredMaskTexture));
+    this.unexploredMaskSprite = this.addChild(new PIXI.Sprite());
 
     this.unexploredFogSprite.mask = this.unexploredMaskSprite;
 
@@ -41,19 +38,25 @@ export class FogImageLayer extends CanvasLayer {
   }
 
   sightRefresh() {
-    this._updateUnexploredMaskTexture();
+    if (!!this.unexploredMaskSprite) {
+      this._updateUnexploredMaskTexture();
+    }
   }
 
   /**
    * Get, Load, and apply the Fog Image Sprite to this.unexploredFogSprite
    */
   async _updateUnexploredFogTexture() {
+    log(false, `_updateUnexploredFogTexture starting`);
     const d = canvas.dimensions;
     const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
     this.unexploredFogTexture = await loadTexture(unexploredImgPath);
 
     this.unexploredFogSprite.texture = this.unexploredFogTexture;
-    log(false, `_updateUnexploredFogTexture`, { unexploredImgPath, unexploredTexture: this.unexploredFogTexture });
+    log(false, `_updateUnexploredFogTexture ending`, {
+      unexploredImgPath,
+      unexploredTexture: this.unexploredFogTexture,
+    });
   }
 
   /**
@@ -76,11 +79,11 @@ export class FogImageLayer extends CanvasLayer {
     canvas.sight.fog.filters = [filter, greyScaleFilter, negativeFilter];
 
     negativeFilter.negative(false);
-    if (!game.user.isGM) {
-      greyScaleFilter.greyscale(0.8, false);
-    }
+
+    greyScaleFilter.greyscale(0.8, false);
 
     canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture);
+    this.unexploredMaskSprite.texture = this.unexploredMaskTexture;
 
     // revert the filters to the normal filters after rendering the mask texture
     canvas.sight.fog.filters = [canvas.sight.filter];

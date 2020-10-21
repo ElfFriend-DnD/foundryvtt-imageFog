@@ -18,15 +18,15 @@ Hooks.once('init', async function () {
 
 Hooks.once('setup', function () {
   // Do anything after initialization but before ready
-  libWrapper.register(
-    MODULE_ID,
-    'SightLayer.prototype._drawFogContainer',
-    (original) => {
-      log(false, '_drawFogContainer firing', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
-      return original();
-    },
-    'WRAPPER'
-  );
+  // libWrapper.register(
+  //   MODULE_ID,
+  //   'SightLayer.prototype._drawFogContainer',
+  //   (original) => {
+  //     log(false, '_drawFogContainer firing', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
+  //     return original();
+  //   },
+  //   'WRAPPER'
+  // );
 });
 
 // from https://github.com/death-save/gm-bg/blob/master/gm-bg.js
@@ -39,6 +39,17 @@ Hooks.once('canvasInit', () => {
   canvas.fogImage = canvas.stage.addChildAt(new FogImageLayer(), index);
 });
 
-Hooks.on('sightRefresh', () => canvas.fogImage.sightRefresh());
+Hooks.on('canvasInit', () => canvas.fogImage.createUnexploredMaskTexture());
+
+Hooks.on('sightRefresh', () => {
+  log(false, 'sightRefresh hook calling');
+  canvas.fogImage.sightRefresh();
+});
 
 Hooks.on('canvasReady', () => canvas.fogImage.init());
+
+Hooks.on('updateScene', (scene, diff, { diff: isDiff }) => {
+  if (scene.active && isDiff && !!diff?.flags?.[MODULE_ID]) {
+    canvas.draw();
+  }
+});
