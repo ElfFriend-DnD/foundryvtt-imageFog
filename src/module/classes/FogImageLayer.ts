@@ -15,19 +15,27 @@ export class FogImageLayer extends CanvasLayer {
     this.unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
   }
 
+  setUnexploredFogSpritePosition() {
+    log(false, 'setUnexploredFogSpritePosition');
+    if (!this.unexploredFogSprite) {
+      return;
+    }
+    const d = canvas.dimensions.sceneRect;
+    this.unexploredFogSprite.position.set(d.x, d.y);
+    this.unexploredFogSprite.width = d.width;
+    this.unexploredFogSprite.height = d.height;
+  }
+
+  /**
+   * Create the Unexplored Fog Sprite and Mask Sprite
+   *
+   */
   init() {
-    log(true, 'Init FogImageLayer', {
-      unexploredFogTexture: this.unexploredFogTexture,
-      unexploredFogSprite: this.unexploredFogSprite,
-      unexploredMaskTexture: this.unexploredMaskTexture,
-      unexploredMaskSprite: this.unexploredMaskSprite,
-    });
+    log(true, 'Init FogImageLayer');
     const d = canvas.dimensions;
 
     this.unexploredFogSprite = this.addChild(new PIXI.Sprite());
-    this.unexploredFogSprite.position.set(d.paddingX, d.paddingY);
-    this.unexploredFogSprite.width = d.sceneWidth;
-    this.unexploredFogSprite.height = d.sceneHeight;
+    this.setUnexploredFogSpritePosition();
 
     this.unexploredMaskSprite = this.addChild(new PIXI.Sprite());
 
@@ -35,12 +43,20 @@ export class FogImageLayer extends CanvasLayer {
 
     this._updateUnexploredFogTexture();
     this._updateUnexploredMaskTexture();
+
+    this.visible = canvas.sight.sources.size || !game.user.isGM;
   }
 
+  /**
+   * If the unexploredMaskSprite exists right now, update the texture, and set visibility
+   */
   sightRefresh() {
-    if (!!this.unexploredMaskSprite) {
-      this._updateUnexploredMaskTexture();
+    if (!this.unexploredMaskSprite) {
+      return;
     }
+
+    this._updateUnexploredMaskTexture();
+    this.visible = canvas.sight.sources.size || !game.user.isGM;
   }
 
   /**
@@ -82,6 +98,7 @@ export class FogImageLayer extends CanvasLayer {
 
     greyScaleFilter.greyscale(0.8, false);
 
+    // render the canvas.sight.fog to the waiting texture
     canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture);
     this.unexploredMaskSprite.texture = this.unexploredMaskTexture;
 

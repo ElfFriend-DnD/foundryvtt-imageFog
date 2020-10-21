@@ -16,22 +16,10 @@ Hooks.once('init', async function () {
   registerSettings();
 });
 
-Hooks.once('setup', function () {
-  // Do anything after initialization but before ready
-  // libWrapper.register(
-  //   MODULE_ID,
-  //   'SightLayer.prototype._drawFogContainer',
-  //   (original) => {
-  //     log(false, '_drawFogContainer firing', { canvasConfig: CONFIG.Canvas, sceneConfig: canvas.scene.data });
-  //     return original();
-  //   },
-  //   'WRAPPER'
-  // );
-});
-
-// from https://github.com/death-save/gm-bg/blob/master/gm-bg.js
+/* Inject our scene config settings */
 Hooks.on('renderSceneConfig', renderSceneConfig);
 
+/* Only Create the FogImageLayer once */
 Hooks.once('canvasInit', () => {
   log(true, `Adding FogImageLayer`);
   // add FogImageLayer
@@ -49,7 +37,8 @@ Hooks.on('sightRefresh', () => {
 Hooks.on('canvasReady', () => canvas.fogImage.init());
 
 Hooks.on('updateScene', (scene, diff, { diff: isDiff }) => {
-  if (scene.active && isDiff && !!diff?.flags?.[MODULE_ID]) {
+  if (scene.isView && isDiff && !!diff?.flags?.[MODULE_ID]) {
+    log(false, 'update the scene we are viewing with a new unexploredFogImage');
     canvas.draw();
   }
 });
