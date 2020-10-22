@@ -25,9 +25,9 @@ https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/mo
 
 ## Added Scene Config Options
 
-| **Name**                 | Description                                                                                                                                      |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| **Unexplored Fog Image** | Path to the file that will be used for the Unexplored Fog. This image should be the same size as your background image or stretching will occur. |
+| **Name**                            | Description                                                                                                                                      |
+| ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Unexplored Fog Background Image** | Path to the file that will be used for the Unexplored Fog. This image should be the same size as your background image or stretching will occur. |
 
 
 ### Compatibility
@@ -37,7 +37,7 @@ I'm honestly not sure how well this will play with modules that affect the fog l
 | **Name**                                           |       Works        | Notes                                                                                                                 |
 | -------------------------------------------------- | :----------------: | --------------------------------------------------------------------------------------------------------------------- |
 | [Less Fog](https://github.com/trdischat/lessfog)   |        :x:         | Less fog's settings do not yet apply to the Unexplored Fog Image.                                                     |
-| [Simple Fog](https://github.com/trdischat/lessfog) | :heavy-check-mark: | Simple fog's Manual Fog Layer sits on top of the Image Fog layer. Interacts the same as with regular sight-based fog. |
+| [Simple Fog](https://github.com/trdischat/lessfog) | :heavy_check_mark: | Simple fog's Manual Fog Layer sits on top of the Image Fog layer. Interacts the same as with regular sight-based fog. |
 
 
 ## Known Issues
