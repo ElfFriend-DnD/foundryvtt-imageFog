@@ -1,21 +1,11 @@
-# Work In Progress
-
-## Moving Parts
-- `SightLayer.fog` is a white to black painting of what should be visible of the background. This has the BlendMode of MULTIPLY applied to paint only the darker parts onto the background.
-- Whatever Image I want to apply to the "Black" parts of the fog will need to live seperate from the `SightLayer.fog` PIXI Container so that the multiply can still work.
-- OR The whole `SightLayer.fog` container will need to be inverted and turned into a mask for either a Black fill or Image which is then blendMode NORMAL. 
-
-- Either Way, I need to create a Sprite based on the `SightLayer.fog` or `SightLayer` itself's contents, invert it so that Black is what we expect to be transparent, and apply that as a mask to the Sprite of the image being loaded.
-
-- I need to do this as the SightLayer updates with each update.
-
-
 # Image as Fog
 
 ![Latest Release Download Count](https://img.shields.io/badge/dynamic/json?label=Downloads@latest&query=assets%5B1%5D.download_count&url=https%3A%2F%2Fapi.github.com%2Frepos%2FElfFriend-DnD%2Ffoundryvtt-imageFog%2Freleases%2Flatest)
 [![ko-fi](https://img.shields.io/badge/-buy%20me%20a%20coke-%23FF5E5B)](https://ko-fi.com/elffriend)
 
-The idea behind this project is to allow GMs to set an image as the fog layer for Foundry maps. This would be useful if say the Players are following a Rough map for overland travel but you want to show them the hexes they are traveling through within their own vision range.
+The idea behind this project is to allow GMs to set an image as the fog layer for Foundry maps. This would be useful if say the players are following a rough map for overland travel but you want to show them the hexes they are traveling through within their own vision range.
+
+The module respects all of expected fog vision limitations. On scenes that do not allow fog exploration, the fog is never dispelled, but the currently visible area of the background items are visible.
 
 ## Installation
 
@@ -27,34 +17,32 @@ https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/mo
 
 ## Gallery
 
+![Example with fog exploration on.](/readme-img/explore-fog.gif)
 
-Click to view bigger.
+![Example without fog exploration on.](/readme-img/no-explore-fog.gif)
 
-## Key Features & Changes
+![Added Scene Config option.](/readme-img/new-scene-config-option.png)
 
-### Use Image as fog!
-Instead of blackness, use an image!
+## Added Scene Config Options
 
-## Options
-
-| **Name** | Description     |
-| -------- | --------------- |
-| **Foo**  | Something Cool. |
+| **Name**                 | Description                                                                                                                                      |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Unexplored Fog Image** | Path to the file that will be used for the Unexplored Fog. This image should be the same size as your background image or stretching will occur. |
 
 
 ### Compatibility
 
-I'm honestly not sure how well this will play with modules that affect character sheets, I'll try to test as many as possible but if somethign is obviously breaking please create and issue here and I'll see what I can do.
+I'm honestly not sure how well this will play with modules that affect the fog layer, under the hood we take a snapshot of the fog layer on every `sightUpdate`, reverse it, and use that as a mask for our image, which otherwise sits on top of the usual fog layer.
 
-| **Name**                                         | Works | Notes         |
-| ------------------------------------------------ | :---: | ------------- |
-| [Less Fog](https://github.com/trdischat/lessfog) |  --   | Does things!. |
-
+| **Name**                                           |       Works        | Notes                                                                                                                 |
+| -------------------------------------------------- | :----------------: | --------------------------------------------------------------------------------------------------------------------- |
+| [Less Fog](https://github.com/trdischat/lessfog)   |        :x:         | Less fog's settings do not yet apply to the Unexplored Fog Image.                                                     |
+| [Simple Fog](https://github.com/trdischat/lessfog) | :heavy-check-mark: | Simple fog's Manual Fog Layer sits on top of the Image Fog layer. Interacts the same as with regular sight-based fog. |
 
 
 ## Known Issues
 
-- It doesn't work!
+- None
 
 ## Acknowledgements
 

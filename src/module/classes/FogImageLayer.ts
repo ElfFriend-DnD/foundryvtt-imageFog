@@ -28,7 +28,6 @@ export class FogImageLayer extends CanvasLayer {
 
   /**
    * Create the Unexplored Fog Sprite and Mask Sprite
-   *
    */
   init() {
     log(true, 'Init FogImageLayer');

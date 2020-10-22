@@ -16,7 +16,8 @@ export async function pixiDump(tgt = null) {
   win.document.write(`<img src='${data}'/>`);
 }
 
+// Debugging use
 // @ts-ignore
-window.ImgFog = {
-  pixiDump,
-};
+// window.ImgFog = {
+//   pixiDump,
+// };

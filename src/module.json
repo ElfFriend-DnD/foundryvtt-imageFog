@@ -11,11 +11,6 @@
       "url": "https://github.com/ElfFriend-DnD"
     }
   ],
-  "dependencies": [
-    {
-      "name": "lib-wrapper"
-    }
-  ],
   "esmodules": ["foundryvtt-imageFog.js"],
   "styles": ["foundryvtt-imageFog.css"],
   "languages": [
@@ -25,8 +20,8 @@
       "path": "lang/en.json"
     }
   ],
-  "minimumCoreVersion": "0.7.3",
-  "compatibleCoreVersion": "0.7.3",
+  "minimumCoreVersion": "0.7.5",
+  "compatibleCoreVersion": "0.7.5",
   "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/issues",
   "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases",
   "download": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/module.zip",
