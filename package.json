@@ -1,8 +1,8 @@
 {
   "private": true,
   "name": "foundryvtt-imageFog",
-  "version": "0.1.0",
-  "description": "",
+  "version": "1.0.0",
+  "description": "Use a custom image as the Fog Layer in FoundryVTT",
   "scripts": {
     "publish": "gulp publish",
     "lint": "prettier --write .",
@@ -12,7 +12,7 @@
     "update": "npm install --save-dev gitlab:foundry-projects/foundry-pc/foundry-pc-types"
   },
   "author": "",
-  "license": "",
+  "license": "MIT",
   "devDependencies": {
     "archiver": "^5.0.2",
     "chalk": "^4.1.0",
