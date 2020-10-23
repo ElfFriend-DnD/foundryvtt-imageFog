@@ -92,6 +92,7 @@ export class FogImageLayer extends CanvasLayer {
     const filter = blurDistance > 0 ? new PIXI.filters.BlurFilter(blurDistance) : new PIXI.filters.AlphaFilter(1.0);
     filter.blendMode = PIXI.BLEND_MODES.NORMAL;
     canvas.sight.fog.filters = [filter, greyScaleFilter, negativeFilter];
+    canvas.sight.fog.filterArea = null;
 
     negativeFilter.negative(false);
 
@@ -103,5 +104,6 @@ export class FogImageLayer extends CanvasLayer {
 
     // revert the filters to the normal filters after rendering the mask texture
     canvas.sight.fog.filters = [canvas.sight.filter];
+    canvas.sight.fog.filterArea = canvas.app.screen;
   }
 }
