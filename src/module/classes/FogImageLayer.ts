@@ -30,8 +30,14 @@ export class FogImageLayer extends CanvasLayer {
    * Create the Unexplored Fog Sprite and Mask Sprite
    */
   init() {
+    const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
+
+    // don't init if there is no unexploredImgPath
+    if (!unexploredImgPath) {
+      return;
+    }
+
     log(true, 'Init FogImageLayer');
-    const d = canvas.dimensions;
 
     this.unexploredFogSprite = this.addChild(new PIXI.Sprite());
     this.setUnexploredFogSpritePosition();
@@ -47,12 +53,13 @@ export class FogImageLayer extends CanvasLayer {
   }
 
   /**
-   * If the unexploredMaskSprite exists right now, update the texture, and set visibility
+   * If the unexploredMaskSprite and unexploredFogTexture exists right now, update the texture, and set visibility
    */
   sightRefresh() {
-    if (!this.unexploredMaskSprite) {
+    if (!this.unexploredMaskSprite || !this.unexploredFogTexture) {
       return;
     }
+    log(false, `sightRefresh refreshing`);
 
     this._updateUnexploredMaskTexture();
     this.visible = canvas.sight.sources.size || !game.user.isGM;
@@ -63,8 +70,13 @@ export class FogImageLayer extends CanvasLayer {
    */
   async _updateUnexploredFogTexture() {
     log(false, `_updateUnexploredFogTexture starting`);
-    const d = canvas.dimensions;
     const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
+
+    if (!unexploredImgPath) {
+      return;
+    }
+    log(false, `_updateUnexploredFogTexture updating`);
+
     this.unexploredFogTexture = await loadTexture(unexploredImgPath);
 
     this.unexploredFogSprite.texture = this.unexploredFogTexture;

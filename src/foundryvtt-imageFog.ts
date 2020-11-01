@@ -1,5 +1,5 @@
 import { log } from './helpers';
-import { MODULE_ID } from './constants';
+import { MODULE_ID, MyFlags } from './constants';
 import { renderSceneConfig } from './module/hooks/renderSceneConfig';
 import { FogImageLayer } from './module/classes/FogImageLayer';
 
@@ -35,7 +35,12 @@ Hooks.on('sightRefresh', () => {
 });
 
 /* Init on Canvas Ready */
-Hooks.on('canvasReady', () => canvas.fogImage.init());
+Hooks.on('canvasReady', () => {
+  const unexploredImgPath = canvas.scene.getFlag(MODULE_ID, MyFlags.UnexploredImg);
+  if (!!unexploredImgPath) {
+    canvas.fogImage.init();
+  }
+});
 
 /* If the updateScene is for the current scene and involved our flags changing, redraw canvas */
 Hooks.on('updateScene', (scene, diff, { diff: isDiff }) => {

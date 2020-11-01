@@ -5,7 +5,6 @@
 ![Foundry Core Compatible Version](https://img.shields.io/badge/dynamic/json.svg?url=https%3A%2F%2Fraw.githubusercontent.com%2FElfFriend-DnD%2Ffoundryvtt-imageFog%2Fmaster%2Fsrc%2Fmodule.json&label=Foundry%20Version&query=$.compatibleCoreVersion&colorB=orange)
 [![ko-fi](https://img.shields.io/badge/-buy%20me%20a%20coke-%23FF5E5B)](https://ko-fi.com/elffriend)
 
-
 The idea behind this project is to allow GMs to set an image as the fog layer for Foundry maps. This would be useful if say the players are following a rough map for overland travel but you want to show them the hexes they are traveling through within their own vision range.
 
 The module respects all of expected fog vision limitations. On scenes that do not allow fog exploration, the fog is never dispelled, but the currently visible area of the background items are visible.
