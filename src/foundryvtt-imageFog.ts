@@ -3,6 +3,19 @@ import { MODULE_ID, MyFlags } from './constants';
 import { renderSceneConfig } from './module/hooks/renderSceneConfig';
 import { FogImageLayer } from './module/classes/FogImageLayer';
 
+/* Create the FogImageLayer once on the canvas on load */
+
+//@ts-ignore
+let theLayers = Canvas.layers;
+theLayers.fogImage = FogImageLayer;
+
+//@ts-ignore
+Object.defineProperty(Canvas, 'layers', {
+  get: function () {
+    return theLayers;
+  },
+});
+
 /* ------------------------------------ */
 /* Initialize module					*/
 /* ------------------------------------ */
@@ -16,14 +29,6 @@ Hooks.once('init', async function () {
 
 /* Inject our scene config settings */
 Hooks.on('renderSceneConfig', renderSceneConfig);
-
-/* Only Create the FogImageLayer once */
-Hooks.once('canvasInit', () => {
-  log(true, `Adding FogImageLayer`);
-  // add FogImageLayer
-  const index = canvas.stage.getChildIndex(canvas.sight) + 1;
-  canvas.fogImage = canvas.stage.addChildAt(new FogImageLayer(), index);
-});
 
 /* Recreate the Unexplored Mask Texture on every canvas Init */
 Hooks.on('canvasInit', () => canvas.fogImage.createUnexploredMaskTexture());

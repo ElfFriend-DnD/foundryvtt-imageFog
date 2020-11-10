@@ -15,6 +15,13 @@ export class FogImageLayer extends CanvasLayer {
     this.unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
   }
 
+  static get layerOptions() {
+    //@ts-ignore
+    return mergeObject(super.layerOptions, {
+      zIndex: 215, // 215 is just above the normal sight layer
+    });
+  }
+
   setUnexploredFogSpritePosition() {
     log(false, 'setUnexploredFogSpritePosition');
     if (!this.unexploredFogSprite) {
@@ -108,7 +115,13 @@ export class FogImageLayer extends CanvasLayer {
 
     negativeFilter.negative(false);
 
-    greyScaleFilter.greyscale(0.8, false);
+    if (game.modules.get('lessfog')?.active) {
+      const threshold = game.settings.get('lessfog', 'unexplored_darkness');
+      log(true, 'unexplored texture threshold', threshold);
+      greyScaleFilter.greyscale(threshold + 0.02, false);
+    } else {
+      greyScaleFilter.greyscale(0.8, false);
+    }
 
     // render the canvas.sight.fog to the waiting texture
     canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture);
