@@ -1,35 +1,49 @@
 {
-	"name": "image-fog",
-	"title": "Image Fog",
-	"description": "Use a custom image as the Fog Layer",
-	"version": "1.1.0",
-	"author": "Andrew Krigline (akrigline)",
-	"authors": [
-		{
-			"name": "Andrew Krigline",
-			"discord": "Calego#0914",
-			"url": "https://github.com/ElfFriend-DnD"
-		}
-	],
-	"esmodules": [
-		"foundryvtt-imageFog.js"
-	],
-	"styles": [
-		"foundryvtt-imageFog.css"
-	],
-	"languages": [
-		{
-			"lang": "en",
-			"name": "English",
-			"path": "lang/en.json"
-		}
-	],
-	"minimumCoreVersion": "0.7.6",
-	"compatibleCoreVersion": "0.7.6",
-	"bugs": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/issues",
-	"changelog": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases",
-	"download": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/download/v1.1.0/module.zip",
-	"manifest": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/module.json",
-	"readme": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/README.md",
-	"url": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog"
+  "name": "image-fog",
+  "title": "Image Fog",
+  "description": "Use a custom image as the Fog Layer",
+  "version": "1.1.0",
+  "author": "Andrew Krigline (akrigline)",
+  "authors": [
+    {
+      "name": "Andrew Krigline",
+      "discord": "Calego#0914",
+      "url": "https://github.com/ElfFriend-DnD"
+    }
+  ],
+  "esmodules": ["foundryvtt-imageFog.js"],
+  "styles": ["foundryvtt-imageFog.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "media": [
+    {
+      "type": "cover",
+      "link": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/readme-img/cover.png"
+    },
+    {
+      "type": "screenshot",
+      "link": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/readme-img/explore-fog.gif"
+    },
+    {
+      "type": "screenshot",
+      "link": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/readme-img/no-explore-fog.gif"
+    },
+    {
+      "type": "screenshot",
+      "link": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/readme-img/new-scene-config-option.png"
+    }
+  ],
+  "minimumCoreVersion": "0.7.6",
+  "compatibleCoreVersion": "0.7.6",
+  "bugs": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/issues",
+  "changelog": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases",
+  "download": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/download/v1.1.0/module.zip",
+  "manifest": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog/releases/latest/download/module.json",
+  "readme": "https://raw.githubusercontent.com/ElfFriend-DnD/foundryvtt-imageFog/master/README.md",
+  "url": "https://github.com/ElfFriend-DnD/foundryvtt-imageFog"
 }
