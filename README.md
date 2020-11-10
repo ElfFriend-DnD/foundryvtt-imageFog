@@ -38,7 +38,7 @@ I'm honestly not sure how well this will play with modules that affect the fog l
 
 | **Name**                                             |       Works        | Notes                                                                                                                 |
 | ---------------------------------------------------- | :----------------: | --------------------------------------------------------------------------------------------------------------------- |
-| [Less Fog](https://github.com/trdischat/lessfog)     |        :x:         | Less fog's settings do not yet apply to the Unexplored Fog Image.                                                     |
+| [Less Fog](https://github.com/trdischat/lessfog)     |        :heavy_check_mark:         | Less fog's settings apply to the Unexplored Fog Image as you would expect them to.                                                     |
 | [Simple Fog](https://github.com/VanceCole/simplefog) | :heavy_check_mark: | Simple fog's Manual Fog Layer sits on top of the Image Fog layer. Interacts the same as with regular sight-based fog. |
 
 
