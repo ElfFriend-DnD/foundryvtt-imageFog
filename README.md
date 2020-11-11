@@ -44,7 +44,7 @@ I'm honestly not sure how well this will play with modules that affect the fog l
 
 ## Known Issues
 
-- None
+- This almost doubles the amount of time it takes to calculate a vision update on scenes that employ it. Which can be a pretty nasty hit for low performance machines. [Issue #10](https://github.com/ElfFriend-DnD/foundryvtt-imageFog/issues/10)
 
 ## Acknowledgements
 
