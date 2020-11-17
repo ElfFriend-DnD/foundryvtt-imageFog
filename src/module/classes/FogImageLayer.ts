@@ -117,7 +117,7 @@ export class FogImageLayer extends CanvasLayer {
 
     if (game.modules.get('lessfog')?.active) {
       const threshold = game.settings.get('lessfog', 'unexplored_darkness');
-      log(true, 'unexplored texture threshold', threshold);
+      log(false, 'unexplored texture threshold', threshold);
       greyScaleFilter.greyscale(threshold + 0.02, false);
     } else {
       greyScaleFilter.greyscale(0.8, false);
