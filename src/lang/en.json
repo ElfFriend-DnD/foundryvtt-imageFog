@@ -1,0 +1,10 @@
+{
+  "IMGFOG": {
+    "settings": {
+      "performanceMode": {
+        "Label": "Performance Mode",
+        "Hint": "Recommended for lower power machines, this will update the image fog mask less frequently while exploring fog. The animation will be less smooth but at the benefit of increased performance. Does not work with Core setting: 'Token Drag Vision'."
+      }
+    }
+  }
+}

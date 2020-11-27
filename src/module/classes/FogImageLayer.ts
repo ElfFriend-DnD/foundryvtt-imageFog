@@ -1,5 +1,5 @@
-import { MODULE_ID, MyFlags } from '../../constants';
-import { log } from '../../helpers';
+import { MODULE_ID, MyFlags } from '../constants';
+import { log } from '../helpers';
 
 export class FogImageLayer extends CanvasLayer {
   unexploredFogTexture: PIXI.Texture;
@@ -62,11 +62,11 @@ export class FogImageLayer extends CanvasLayer {
   /**
    * If the unexploredMaskSprite and unexploredFogTexture exists right now, update the texture, and set visibility
    */
-  sightRefresh() {
+  maskRefresh() {
     if (!this.unexploredMaskSprite || !this.unexploredFogTexture) {
       return;
     }
-    log(false, `sightRefresh refreshing`);
+    log(false, `maskRefresh refreshing`);
 
     this._updateUnexploredMaskTexture();
     this.visible = canvas.sight.sources.size || !game.user.isGM;
@@ -117,7 +117,7 @@ export class FogImageLayer extends CanvasLayer {
 
     if (game.modules.get('lessfog')?.active) {
       const threshold = game.settings.get('lessfog', 'unexplored_darkness');
-      log(true, 'unexplored texture threshold', threshold);
+      log(false, 'unexplored texture threshold', threshold);
       greyScaleFilter.greyscale(threshold + 0.02, false);
     } else {
       greyScaleFilter.greyscale(0.8, false);

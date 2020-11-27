@@ -1,7 +1,9 @@
-import { log } from './helpers';
-import { MODULE_ID, MyFlags } from './constants';
+import { log } from './module/helpers';
+import { MODULE_ID, MyFlags, MySettings } from './module/constants';
 import { renderSceneConfig } from './module/hooks/renderSceneConfig';
 import { FogImageLayer } from './module/classes/FogImageLayer';
+import { libWrapper } from './module/libWrapperShim';
+import { registerSettings } from './module/settings';
 
 /* Create the FogImageLayer once on the canvas on load */
 
@@ -22,9 +24,30 @@ Object.defineProperty(Canvas, 'layers', {
 Hooks.once('init', async function () {
   log(true, `Initializing ${MODULE_ID}`);
 
+  await registerSettings();
+
   // Debugging Use.
   CONFIG[MODULE_ID] = { debug: false };
   // CONFIG.debug.hooks = true;
+  // @ts-ignore
+  // CONFIG.debug.fog = true;
+
+  libWrapper.register(
+    MODULE_ID,
+    'SightLayer.prototype.updateFog',
+    function (updateFog, ...args) {
+      const performanceMode = game.settings.get(MODULE_ID, MySettings.performanceMode);
+      if (performanceMode && canvas?.fogImage?.unexploredFogTexture) {
+        log(false, 'SightLayer.updateFog called, ImageFog is updating the mask', {
+          ...args,
+        });
+        canvas.fogImage.maskRefresh();
+      }
+
+      updateFog(args);
+    },
+    'WRAPPER'
+  );
 });
 
 /* Inject our scene config settings */
@@ -35,8 +58,12 @@ Hooks.on('canvasInit', () => canvas.fogImage.createUnexploredMaskTexture());
 
 /* Update the right things when sight refreshes */
 Hooks.on('sightRefresh', () => {
-  log(false, 'sightRefresh hook calling');
-  canvas.fogImage.sightRefresh();
+  const performanceMode = game.settings.get(MODULE_ID, MySettings.performanceMode);
+
+  if (!performanceMode) {
+    log(false, 'sightRefresh hook called, updating ImageFog mask');
+    canvas.fogImage.maskRefresh();
+  }
 });
 
 /* Init on Canvas Ready */

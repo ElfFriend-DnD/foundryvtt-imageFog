@@ -1,4 +1,4 @@
-import { MODULE_ID, MyFlags } from '../../constants';
+import { MODULE_ID, MyFlags } from '../constants';
 
 export const renderSceneConfig = (app, html, data) => {
   renderUnexploredImgControls(app, html, data);

@@ -20,6 +20,12 @@
       "path": "lang/en.json"
     }
   ],
+  "dependencies": [
+    {
+      "name": "lib-wrapper",
+      "version": "1.0.5"
+    }
+  ],
   "media": [
     {
       "type": "cover",
