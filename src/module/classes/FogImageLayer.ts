@@ -10,7 +10,7 @@ export class FogImageLayer extends CanvasLayer {
 
   createUnexploredMaskTexture() {
     log(false, 'createUnexploredMaskTexture');
-    const d = canvas.dimensions;
+    const d = canvas.dimensions.sceneRect;
 
     this.unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
   }
@@ -33,6 +33,17 @@ export class FogImageLayer extends CanvasLayer {
     this.unexploredFogSprite.height = d.height;
   }
 
+  setUnexploredMaskSpritePosition() {
+    log(false, 'setUnexploredMaskSpritePosition');
+    if (!this.unexploredMaskSprite) {
+      return;
+    }
+    const d = canvas.dimensions.sceneRect;
+    this.unexploredMaskSprite.position.set(d.x, d.y);
+    this.unexploredMaskSprite.width = d.width;
+    this.unexploredMaskSprite.height = d.height;
+  }
+
   /**
    * Create the Unexplored Fog Sprite and Mask Sprite
    */
@@ -47,11 +58,14 @@ export class FogImageLayer extends CanvasLayer {
     log(true, 'Init FogImageLayer');
 
     this.unexploredFogSprite = this.addChild(new PIXI.Sprite());
+    this.unexploredFogSprite.name = 'Unexplored Fog Image Sprite';
     this.setUnexploredFogSpritePosition();
 
     this.unexploredMaskSprite = this.addChild(new PIXI.Sprite());
+    this.unexploredMaskSprite.name = 'Unexplored Fog Mask Sprite';
+    this.setUnexploredMaskSpritePosition();
 
-    this.unexploredFogSprite.mask = this.unexploredMaskSprite;
+    // this.unexploredFogSprite.mask = this.unexploredMaskSprite;
 
     this._updateUnexploredFogTexture();
     this._updateUnexploredMaskTexture();
@@ -128,8 +142,13 @@ export class FogImageLayer extends CanvasLayer {
       greyScaleFilter.greyscale(0.8, false);
     }
 
+    const d = canvas.dimensions;
+    const myMatrix = new PIXI.Matrix();
+    myMatrix.tx = -d.paddingX;
+    myMatrix.ty = -d.paddingY;
+
     // render the canvas.sight.fog to the waiting texture
-    canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture);
+    canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture, undefined, myMatrix);
     this.unexploredMaskSprite.texture = this.unexploredMaskTexture;
 
     // revert the filters to the normal filters after rendering the mask texture
