@@ -59,6 +59,10 @@ export class FogImageLayer extends CanvasLayer {
     this.visible = canvas.sight.sources.size || !game.user.isGM;
   }
 
+  sightRefresh() {
+    this.maskRefresh();
+  }
+
   /**
    * If the unexploredMaskSprite and unexploredFogTexture exists right now, update the texture, and set visibility
    */
