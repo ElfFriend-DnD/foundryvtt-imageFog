@@ -1,5 +1,5 @@
 import { MODULE_ID, MyFlags } from '../constants';
-import { log } from '../helpers';
+import { log, pixiDump } from '../helpers';
 
 export class FogImageLayer extends CanvasLayer {
   unexploredFogTexture: PIXI.Texture;
@@ -57,6 +57,11 @@ export class FogImageLayer extends CanvasLayer {
     this._updateUnexploredMaskTexture();
 
     this.visible = canvas.sight.sources.size || !game.user.isGM;
+  }
+
+  sightRefresh() {
+    console.warn('fogImage.sightRefresh is deprecated and will be removed in a future update.');
+    this.maskRefresh();
   }
 
   /**
@@ -130,5 +135,22 @@ export class FogImageLayer extends CanvasLayer {
     // revert the filters to the normal filters after rendering the mask texture
     canvas.sight.fog.filters = [canvas.sight.filter];
     canvas.sight.fog.filterArea = canvas.app.screen;
+  }
+
+  setUnexploredMaskTexture(
+    texture: PIXI.Texture,
+    options?: {
+      isInverted?: boolean;
+    }
+  ) {
+    const { isInverted = true } = options || {};
+
+    if (!this.unexploredMaskSprite) {
+      log(false, `setUnexploredMaskTexture`, 'tried to set a texture but the sprite does not exist');
+      return;
+    }
+
+    log(false, `setUnexploredMaskTexture`, 'setting sprite texture');
+    this.unexploredMaskSprite.texture = texture;
   }
 }

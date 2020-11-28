@@ -1,7 +1,7 @@
 import { MODULE_ID } from './constants';
 
 export function log(force: boolean, ...args) {
-  if (force || CONFIG[MODULE_ID].debug === true) {
+  if (force || CONFIG[MODULE_ID]?.debug === true) {
     console.log(MODULE_ID, '|', ...args);
   }
 }
@@ -18,6 +18,4 @@ export async function pixiDump(tgt = null) {
 
 // Debugging use
 // @ts-ignore
-// window.ImgFog = {
-//   pixiDump,
-// };
+window.pixiDump = pixiDump;

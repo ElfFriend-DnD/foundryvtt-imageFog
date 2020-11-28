@@ -27,7 +27,7 @@ Hooks.once('init', async function () {
   await registerSettings();
 
   // Debugging Use.
-  CONFIG[MODULE_ID] = { debug: false };
+  CONFIG[MODULE_ID] = { debug: true };
   // CONFIG.debug.hooks = true;
   // @ts-ignore
   // CONFIG.debug.fog = true;
@@ -54,7 +54,25 @@ Hooks.once('init', async function () {
 Hooks.on('renderSceneConfig', renderSceneConfig);
 
 /* Recreate the Unexplored Mask Texture on every canvas Init */
-Hooks.on('canvasInit', () => canvas.fogImage.createUnexploredMaskTexture());
+Hooks.on('canvasInit', () => {
+  canvas.fogImage.createUnexploredMaskTexture();
+
+  // @ts-ignore
+  window.fogImage = {
+    maskRefresh: canvas.fogImage.maskRefresh,
+    setUnexploredMaskTexture: (texture: PIXI.Texture) => {
+      if (!canvas.fogImage?.unexploredMaskSprite) {
+        log(false, `setUnexploredMaskTexture`, 'tried to set a texture but the sprite does not exist');
+        return;
+      }
+
+      log(false, `setUnexploredMaskTexture`, 'setting sprite texture');
+      canvas.fogImage.unexploredMaskSprite.texture = texture;
+    },
+  };
+
+  Hooks.call('ImageFogReady');
+});
 
 /* Update the right things when sight refreshes */
 Hooks.on('sightRefresh', () => {
