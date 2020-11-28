@@ -10,7 +10,7 @@ export class FogImageLayer extends CanvasLayer {
 
   createUnexploredMaskTexture() {
     log(false, 'createUnexploredMaskTexture');
-    const d = canvas.dimensions.sceneRect;
+    const d = canvas.dimensions;
 
     this.unexploredMaskTexture = PIXI.RenderTexture.create({ width: d.width, height: d.height });
   }
@@ -65,7 +65,7 @@ export class FogImageLayer extends CanvasLayer {
     this.unexploredMaskSprite.name = 'Unexplored Fog Mask Sprite';
     this.setUnexploredMaskSpritePosition();
 
-    // this.unexploredFogSprite.mask = this.unexploredMaskSprite;
+    this.unexploredFogSprite.mask = this.unexploredMaskSprite;
 
     this._updateUnexploredFogTexture();
     this._updateUnexploredMaskTexture();
@@ -142,13 +142,23 @@ export class FogImageLayer extends CanvasLayer {
       greyScaleFilter.greyscale(0.8, false);
     }
 
-    const d = canvas.dimensions;
-    const myMatrix = new PIXI.Matrix();
-    myMatrix.tx = -d.paddingX;
-    myMatrix.ty = -d.paddingY;
+    const d = canvas.dimensions.sceneRect;
 
+    const myMatrix = new PIXI.Matrix().translate(-d.x, -d.y);
+
+    // myMatrix.tx = -d.x;
+    // myMatrix.ty = -d.paddingY;
+
+    log(false, '_updateUnexploredMaskTexture matrix', {
+      d,
+      myMatrix,
+    });
     // render the canvas.sight.fog to the waiting texture
-    canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture, undefined, myMatrix);
+    canvas.app.renderer.render(canvas.sight.fog, this.unexploredMaskTexture, false, myMatrix);
+
+    // this.unexploredMaskTexture = canvas.app.renderer.generateTexture(canvas.sight.fog);
+    // pixiDump(this.unexploredMaskTexture);
+
     this.unexploredMaskSprite.texture = this.unexploredMaskTexture;
 
     // revert the filters to the normal filters after rendering the mask texture
